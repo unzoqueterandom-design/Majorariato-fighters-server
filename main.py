@@ -15,9 +15,13 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     players.add(websocket)
 
+    print(f"[CONEXION] Jugadores conectados: {len(players)}", flush=True)
+
     try:
         while True:
             message = await websocket.receive_text()
+
+            print(f"[MENSAJE] {message}", flush=True)
 
             for player in players:
                 if player != websocket:
@@ -25,6 +29,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
     except WebSocketDisconnect:
         players.discard(websocket)
+        print(f"[DESCONEXION] Jugadores conectados: {len(players)}", flush=True)
 
 
 if __name__ == "__main__":
